@@ -1,14 +1,27 @@
 package com.codewithdurgesh.blog.payloads;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class UserDto {
+	
 	private int id;
+	@NotNull
+	@Size(min = 4 , message ="User must be have minimum")
 	private String name;
+	
+	@Email
 	private String email;
+	
+	@NotNull
+	@Size(min=3,max=12,message="Password must minimum of 3 char and mix of 12 char")
 	private String password;
+	
+	@NotNull
 	private String about;
 
 	public int getId() {
