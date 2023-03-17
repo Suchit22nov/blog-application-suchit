@@ -2,6 +2,7 @@ package com.codewithdurgesh.blog.exceptions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UnknownFormatConversionException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class GlobalExceptionHandler {
 		ApiResponse api = new ApiResponse(message , false);
 		return  new ResponseEntity<ApiResponse>(api,HttpStatus.NOT_FOUND);
 	}
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String,String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
 		Map<String,String> resp = new HashMap<>();
@@ -29,8 +31,14 @@ public class GlobalExceptionHandler {
 			resp.put(fieldName, ErrorMessage);
 		});
 		return new ResponseEntity<Map<String,String>>(resp,HttpStatus.BAD_REQUEST);
-		
-		
 	}
-
+	
+	@ExceptionHandler(UnknownFormatConversionException.class)
+	public ResponseEntity<Map<String,String>> handleUnknownFormatConversionException(UnknownFormatConversionException ex){
+		Map<String,String> resp = new HashMap<>();
+		String fieldName = "Status";
+		String ErrorMessage = "That Id is not exists";
+		resp.put(fieldName,ErrorMessage);
+		return new ResponseEntity<Map<String,String>>(resp,HttpStatus.BAD_REQUEST);
+	}
 }
