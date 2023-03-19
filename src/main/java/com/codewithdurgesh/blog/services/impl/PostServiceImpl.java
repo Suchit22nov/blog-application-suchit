@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.codewithdurgesh.blog.entities.Category;
@@ -45,12 +48,18 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostDto updatePost(PostDto postDto, Integer postId) {
-		return null;
+		Post post = this.postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("postId","postId",postId));
+		post.setTitle(postDto.getTitle());
+		post.setContent(postDto.getContent());
+		post.setImageName("default.png");
+		Post updatedPost = this.postRepo.save(post);
+		return this.modelMapper.map(updatedPost, PostDto.class);
 	}
 
 	@Override
 	public void deletePost(Integer postId) {
-		
+		Post post = this.postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("postId","postId",postId));
+	this.postRepo.delete(post);
 	}
 
 	@Override
@@ -61,8 +70,10 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPost() {
-		List<Post> allPost= this.postRepo.findAll();
+	public List<PostDto> getAllPost(Integer pageNumber,Integer pageSize) {
+		Pageable p= PageRequest.of(pageNumber, pageSize);
+		Page<Post> pagePost= this.postRepo.findAll(p);
+		List<Post> allPost= pagePost.getContent();
 		List<PostDto> postlist = allPost.stream().map((post)->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 			return postlist;
 	}
