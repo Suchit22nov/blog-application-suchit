@@ -56,8 +56,6 @@ public class UserController {
 	public ResponseEntity<UserDto>getSingleUser(@PathVariable Integer userId){
 		UserDto uservalue=userService.getUserById(userId);
 		return ResponseEntity.ok(uservalue);
-		
-		
 	}
 }
 

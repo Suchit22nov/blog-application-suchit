@@ -1,8 +1,6 @@
 package com.codewithdurgesh.blog.services;
 
 import java.util.List;
-
-import com.codewithdurgesh.blog.entities.Post;
 import com.codewithdurgesh.blog.payloads.PostDto;
 
 public interface PostService {
@@ -10,8 +8,9 @@ public interface PostService {
 	PostDto updatePost(PostDto postDto,Integer postId);
 	void deletePost(Integer postId);
 	PostDto getPostById(Integer postId);
-	List<Post> getAllPost();
-	List<Post> getPostByCategory(Integer CategoryId);
+	List<PostDto> getAllPost();
+	List<PostDto> getPostByCategory(Integer CategoryId);
+	List<PostDto> getPostByUser(Integer userId );
 	PostDto createPost(PostDto postDto);
 
 }
