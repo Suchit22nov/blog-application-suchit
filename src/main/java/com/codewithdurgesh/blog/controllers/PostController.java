@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codewithdurgesh.blog.payloads.ApiResponse;
 import com.codewithdurgesh.blog.payloads.PostDto;
+import com.codewithdurgesh.blog.payloads.PostResponse;
 import com.codewithdurgesh.blog.services.PostService;
 
 @RestController
@@ -24,55 +25,57 @@ import com.codewithdurgesh.blog.services.PostService;
 public class PostController {
 	@Autowired
 	private PostService postService;
-	
-	//Create
+
+	// Create
 	@PostMapping("/user/{userId}/category/{categoryId}")
-	public ResponseEntity<PostDto> createPost(
-			@RequestBody PostDto postDto,
-			@PathVariable Integer userId,
-			@PathVariable Integer categoryId){
-		PostDto createPost = this.postService.createPost(postDto,userId,categoryId);
-		return new ResponseEntity<PostDto>(createPost,HttpStatus.OK);
+	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, @PathVariable Integer userId,
+			@PathVariable Integer categoryId) {
+		PostDto createPost = this.postService.createPost(postDto, userId, categoryId);
+		return new ResponseEntity<PostDto>(createPost, HttpStatus.OK);
 	}
-	//update post
+
+	// update post
 	@PutMapping("/posts/{postId}")
-	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable Integer postId){
+	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable Integer postId) {
 		PostDto updatepost = this.postService.updatePost(postDto, postId);
-		return new ResponseEntity<PostDto>(updatepost,HttpStatus.ACCEPTED);
-		
+		return new ResponseEntity<PostDto>(updatepost, HttpStatus.ACCEPTED);
+
 	}
+
 	// get by user
 	@GetMapping("/user/{userId}/posts")
-	public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable Integer userId){
+	public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable Integer userId) {
 		List<PostDto> posts = this.postService.getPostByUser(userId);
-		return  new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+		return new ResponseEntity<List<PostDto>>(posts, HttpStatus.OK);
 	}
+
 	// get by Category
 	@GetMapping("/category/{categoryId}/posts")
-	public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable Integer categoryId){
+	public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable Integer categoryId) {
 		List<PostDto> posts = this.postService.getPostByUser(categoryId);
-		return  new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+		return new ResponseEntity<List<PostDto>>(posts, HttpStatus.OK);
 	}
-	// get port by postId 
+
+	// get port by postId
 	@GetMapping("/post/{postId}")
-	public ResponseEntity<PostDto> getPostsById(@PathVariable Integer postId){
+	public ResponseEntity<PostDto> getPostsById(@PathVariable Integer postId) {
 		PostDto posts = this.postService.getPostById(postId);
-		return  new ResponseEntity<PostDto>(posts,HttpStatus.OK);
+		return new ResponseEntity<PostDto>(posts, HttpStatus.OK);
 	}
+
 	// get all user
 	@GetMapping("/posts")
-	public ResponseEntity<List<PostDto>> getAllPost(
-			@RequestParam(value="pageNumber",defaultValue ="1",required=false) Integer pageNumber ,
-			@RequestParam(value="pageNumber",defaultValue ="4",required=false) Integer pageSize ){
-		List<PostDto> posts = this.postService.getAllPost(pageNumber, pageSize);
-		return  new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+	public ResponseEntity<PostResponse> getAllPost(
+			@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+			@RequestParam(value = "pageNumber", defaultValue = "4", required = false) Integer pageSize) {
+		PostResponse posts = this.postService.getAllPost(pageNumber, pageSize);
+		return new ResponseEntity<PostResponse>(posts, HttpStatus.OK);
 	}
+
 	@DeleteMapping("/posts/{postId}")
-	public ApiResponse deletePostbyPostId(@PathVariable Integer postId){
+	public ApiResponse deletePostbyPostId(@PathVariable Integer postId) {
 		this.postService.deletePost(postId);
-		return new ApiResponse ("Post Deleted Successfully",true);
+		return new ApiResponse("Post Deleted Successfully", true);
 	}
-	
-	
 
 }
