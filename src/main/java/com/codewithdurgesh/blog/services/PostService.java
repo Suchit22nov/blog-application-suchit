@@ -9,7 +9,7 @@ public interface PostService {
 	PostDto updatePost(PostDto postDto,Integer postId);
 	void deletePost(Integer postId);
 	PostDto getPostById(Integer postId);
-	PostResponse getAllPost(Integer pageNumber,Integer pageSize);
+	PostResponse getAllPost(Integer pageNumber,Integer pageSize,String sortBy, String sortDir);
 	List<PostDto> getPostByCategory(Integer CategoryId);
 	List<PostDto> getPostByUser(Integer userId );
 	PostDto createPost(PostDto postDto);
